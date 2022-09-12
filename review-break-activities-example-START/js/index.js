@@ -12,7 +12,7 @@ let topicList = document.querySelector(".topics-list")
 
 const addTopicToPage = (topicName, topicListElement) => {
     let newTopicElement = `<li class="list-group-item">
-    ${topicName}
+        ${topicName}
     </li>`
 
     topicListElement.innerHTML += newTopicElement
