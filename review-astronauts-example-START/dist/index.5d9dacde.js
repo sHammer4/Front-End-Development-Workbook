@@ -535,13 +535,13 @@ function hmrAcceptRun(bundle, id) {
 // js here.
 var _astronautJs = require("./api/astronaut.js");
 var _astronautJs1 = require("./dom/astronaut.js");
-let astronautList;
 let astronautListElement = document.querySelector(".astronaut-list");
 (0, _astronautJs.getAstronautList)().then((data)=>{
-    astronautList = data;
+    console.log(data);
+    data.results.map((astronautData)=>{
+        (0, _astronautJs1.renderAstronautListItem)(astronautData, astronautListElement);
+    });
 });
-console.log(astronautList) //renderAstronautListItem(astronautList, astronautListElement);
-;
 
 },{"./api/astronaut.js":"j9BdQ","./dom/astronaut.js":"a988T"}],"j9BdQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -550,11 +550,11 @@ parcelHelpers.export(exports, "getAstronautList", ()=>getAstronautList);
 const BASE_URL = "https://lldev.thespacedevs.com/2.2.0";
 // api functions here.
 const getAstronautList = ()=>{
-    fetch(BASE_URL + "/astronaut/").then((response)=>{
+    return fetch(BASE_URL + "/astronaut/").then((response)=>{
         return response.json();
     }).then((data)=>{
-        console.log("Data");
-        return data.results;
+        console.log(data);
+        return data;
     });
 };
 
