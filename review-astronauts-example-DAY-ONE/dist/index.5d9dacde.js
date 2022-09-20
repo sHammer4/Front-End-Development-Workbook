@@ -533,17 +533,18 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"1Z4Rq":[function(require,module,exports) {
 // js here.
-var _astronautJs = require("./api/astronaut.js");
-var _astronautJs1 = require("./dom/astronaut.js");
-let astronautListElement = document.querySelector(".astronaut-list");
-(0, _astronautJs.getAstronautList)().then((data)=>{
-    console.log(data);
-    data.results.map((astronautData)=>{
-        (0, _astronautJs1.renderAstronautListItem)(astronautData, astronautListElement);
+var _bootstrapMinCss = require("bootstrap/dist/css/bootstrap.min.css");
+var _astronaut = require("./api/astronaut");
+var _astronaut1 = require("./dom/astronaut");
+let list = (0, _astronaut.getAstronautList)().then((astronautData)=>{
+    let astronautListElement = document.querySelector(".astronaut-list");
+    console.log(astronautData.results);
+    astronautData.results.map((data)=>{
+        (0, _astronaut1.renderAstronautListItem)(data, astronautListElement);
     });
 });
 
-},{"./api/astronaut.js":"j9BdQ","./dom/astronaut.js":"a988T"}],"j9BdQ":[function(require,module,exports) {
+},{"bootstrap/dist/css/bootstrap.min.css":"i5LP7","./api/astronaut":"j9BdQ","./dom/astronaut":"a988T"}],"i5LP7":[function() {},{}],"j9BdQ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getAstronautList", ()=>getAstronautList);
@@ -553,7 +554,6 @@ const getAstronautList = ()=>{
     return fetch(BASE_URL + "/astronaut/").then((response)=>{
         return response.json();
     }).then((data)=>{
-        console.log(data);
         return data;
     });
 };
@@ -606,25 +606,16 @@ replace the instances that have "THIS FORMAT HERE" with the astronautData.
     <p class="mb-1">ASTRONAUT BIO HERE </p>
 </li>
 */ const renderAstronautListItem = (astronautData, listElement)=>{
-    /*
-    let newListElement = `<li href="#" class="list-group-item list-group-item-action">
-        <div class="d-flex w-100 justify-content-between">
-            <img src="${astronautData.profile_image_thumbnail}" class="rounded float-start" alt=""">    
-            <h5 class="mb-1">${astronautData.name} (${astronautData.status})</h5>
-            <small class="float-end">born ${astronautData.date_of_birth}</small>
-        </div>
-        <small>${astronautData.nationality} (${astronautData.agency})</small>    
-        <p class="mb-1">${astronautData.bio} </p>
-    </li>`
-    listElement.innerHTML += newListElement;
-    */ console.log("Yess");
-    console.log(astronautData);
-    //console.log(astronautData.profile_image_thumbnail)
-    astronautData.map((astronaut)=>{
-        console.log(astronaut.name);
-    });
-    console.log(astronautData.name);
-//console.log(astronautData.date_of_birth)
+    let element = `<li href="#" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+        <img src="${astronautData.profile_image_thumbnail}" class="rounded float-start" alt=""">    
+        <h5 class="mb-1">${astronautData.name} (${astronautData.status.name})</h5>
+        <small class="float-end">born ${astronautData.date_of_birth}</small>
+    </div>
+    <small>${astronautData.nationality} (${astronautData.agency.name})</small>    
+    <p class="mb-1">${astronautData.bio}</p>
+</li>`;
+    listElement.innerHTML += element;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["gzp3I","1Z4Rq"], "1Z4Rq", "parcelRequire4625")

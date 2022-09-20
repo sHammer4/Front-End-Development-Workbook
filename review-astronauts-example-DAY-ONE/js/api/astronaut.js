@@ -6,8 +6,7 @@ const getAstronautList = () => {
         .then((response) => {
             return response.json()
         })
-        .then((data) => { 
-            console.log(data)
+        .then((data) => {
             return data
         })
 }

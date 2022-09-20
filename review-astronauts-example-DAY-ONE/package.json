@@ -1,0 +1,21 @@
+{
+  "name": "review-astronauts-example-start",
+  "version": "0.0.1",
+  "description": "something to do with astronauts",
+  "main": "index.js",
+  "source": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hello": "echo \"Hello dan this is my first command!\"",
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "author": "Dan (fantasia)",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.7.0"
+  }
+}
