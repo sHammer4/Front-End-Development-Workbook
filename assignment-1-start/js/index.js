@@ -24,6 +24,6 @@ weatherForm.addEventListener("submit", (event) => {
         renderWeather(searchedCity.value, weatherElement)
     }
 
-    //Clears user input
+    //Clears user input after search 
     searchedCity = ""
 })
