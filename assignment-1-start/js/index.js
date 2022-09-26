@@ -11,19 +11,19 @@ weatherForm.addEventListener("submit", (event) => {
 
     //Returns the city entered
     let searchedCity = event.target.elements["city-name"]
-    console.log(searchedCity.value)
 
     //Get weather data
-    weatherData = getWeather(searchedCity.value)
-    let weatherElement = document.querySelector(".weather-container .text-center")
-    
-    //Adds weather data card if searched city is found in api, error message if invalid
-    if(weatherData == null) {
-        weatherElement.innerHTML = "Must enter a valid city name"
-    } else {
-        renderWeather(searchedCity.value, weatherElement)
-    }
+    let weatherElement = document.querySelector(".weather-container")
+    getWeather(searchedCity.value).then(weatherData => {
+        //Returns error message if nothing entered
+        if(weatherData.message != null) {
+            weatherElement.innerHTML = weatherData.message
+        } else {
+            renderWeather(weatherData, weatherElement)
+        }
+    })
 
-    //Clears user input after search 
-    searchedCity = ""
+    //Clears user input after search
+    console.log("Fricken clear please")
+    event.target.elements["city-name"] = ""
 })

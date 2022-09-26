@@ -532,31 +532,47 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"1Z4Rq":[function(require,module,exports) {
-// bootstrap linked below.
-var _bootstrapMinCss = require("bootstrap/dist/css/bootstrap.min.css");
-var _baseJs = require("./api/base.js");
-var _weatherJs = require("./dom/weather.js");
+// Include your assignment 1 below.
+// Read the PDF for instruction on what to do.
+// Ensure that you look at the "Marking Key" section of the PDF
+// to not lose any marks.
+var _base = require("./api/base");
+var _weather = require("./dom/weather");
 let weatherForm = document.querySelector("#weather-search");
-let weatherContainer = document.querySelector(".weather-container");
 weatherForm.addEventListener("submit", (event)=>{
     event.preventDefault();
-    let cityName = weatherForm.elements["city-name"].value;
-    (0, _baseJs.getWeather)(cityName).then((data)=>{
-        (0, _weatherJs.renderWeather)(data, weatherContainer);
-        weatherForm.elements["city-name"].value = "";
+    //Returns the city entered
+    let searchedCity = event.target.elements["city-name"];
+    //Get weather data
+    let weatherElement = document.querySelector(".weather-container");
+    (0, _base.getWeather)(searchedCity.value).then((weatherData)=>{
+        //Returns error message if nothing entered
+        if (weatherData.message != null) weatherElement.innerHTML = weatherData.message;
+        else (0, _weather.renderWeather)(weatherData, weatherElement);
     });
+    //Clears user input after search
+    console.log("Fricken clear please");
+    event.target.elements["city-name"] = "";
 });
 
-},{"bootstrap/dist/css/bootstrap.min.css":"i5LP7","./api/base.js":"ffrQO","./dom/weather.js":"gj29j"}],"i5LP7":[function() {},{}],"ffrQO":[function(require,module,exports) {
+},{"./api/base":"ffrQO","./dom/weather":"gj29j"}],"ffrQO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+// export the getWeather function
 parcelHelpers.export(exports, "getWeather", ()=>getWeather);
-const API_KEY = "52fc99a956494caea7b135022179925e";
-const getWeather = (searchedCity)=>{
-    return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${API_KEY}&units=metric`).then((response)=>{
-        return response.json();
-    }).then((data)=>{
-        return Promise.resolve(data);
+// replace your api key 
+const API_KEY = "bedacfe1de749e877285f9631320be77";
+// create getWeather function here
+const getWeather = (cityName)=>{
+    //http://api.openweathermap.org/geo/1.0/direct?q=Tokyo&limit=1&appid=bedacfe1de749e877285f9631320be77
+    return fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=" + API_KEY).then((response)=>response.json()).then((data)=>{
+        cityData = data[0];
+        //If nothing entered, will return error code + message
+        //If city found, will take coordinates from original fetch and fetch again for temperature data
+        if (cityData != null) return fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + cityData.lat + "&lon=" + cityData.lon + "&appid=" + API_KEY + "&units=metric").then((reponse)=>reponse.json()).then((data)=>{
+            return data;
+        });
+        return data;
     });
 };
 
@@ -593,13 +609,10 @@ exports.export = function(dest, destName, get) {
 },{}],"gj29j":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+// export the renderWeather function
 parcelHelpers.export(exports, "renderWeather", ()=>renderWeather);
 /*
 HTML Structure 
-
-
-Note: I'm sure you've read the PDF but there will be no marks given
-for using innerHTML. 
 
 <div class="mt-2 card" >
   <div class="card-body">
@@ -609,19 +622,18 @@ for using innerHTML.
   </div>
 </div>
 
-*/ const renderWeather = (weatherData, weatherElement)=>{
+*/ // renderWeather function
+const renderWeather = (weatherData, weatherElement)=>{
     let element = `<div class="mt-2 card" >
-      <div class="card-body">
-        <h5 class="card-title">${weatherData.name}, ${weatherData.sys.country}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">${weatherData.main.temp} °C</h6>
-        <p class="card-text">
-          ${weatherData.weather[0].description}
-        </p>
-      </div>
-    </div>`;
+    <div class="card-body">
+      <h5 class="card-title">${weatherData.name}, ${weatherData.sys.country}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">${weatherData.main.temp}</h6>
+      <p class="card-text">${weatherData.weather[0].description}</p>
+    </div>
+  </div>`;
     weatherElement.innerHTML = element;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["gzp3I","1Z4Rq"], "1Z4Rq", "parcelRequire1cd3")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["gzp3I","1Z4Rq"], "1Z4Rq", "parcelRequired5d3")
 
 //# sourceMappingURL=index.5d9dacde.js.map
