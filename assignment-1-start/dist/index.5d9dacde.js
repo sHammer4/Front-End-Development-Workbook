@@ -538,6 +538,7 @@ function hmrAcceptRun(bundle, id) {
 // to not lose any marks.
 var _base = require("./api/base");
 var _weather = require("./dom/weather");
+var _bootstrapCss = require("bootstrap/dist/css/bootstrap.css");
 let weatherForm = document.querySelector("#weather-search");
 weatherForm.addEventListener("submit", (event)=>{
     event.preventDefault();
@@ -546,16 +547,16 @@ weatherForm.addEventListener("submit", (event)=>{
     //Get weather data
     let weatherElement = document.querySelector(".weather-container");
     (0, _base.getWeather)(searchedCity.value).then((weatherData)=>{
-        //Returns error message if nothing entered
+        console.log(weatherData);
         if (weatherData.message != null) weatherElement.innerHTML = weatherData.message;
+        else if (weatherData.length == 0) weatherElement.innerHTML = "Weather data cannot be found";
         else (0, _weather.renderWeather)(weatherData, weatherElement);
     });
     //Clears user input after search
-    console.log("Fricken clear please");
-    event.target.elements["city-name"] = "";
+    event.target.elements["city-name"].value = "";
 });
 
-},{"./api/base":"ffrQO","./dom/weather":"gj29j"}],"ffrQO":[function(require,module,exports) {
+},{"./api/base":"ffrQO","./dom/weather":"gj29j","bootstrap/dist/css/bootstrap.css":"jJvnD"}],"ffrQO":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // export the getWeather function
@@ -634,6 +635,6 @@ const renderWeather = (weatherData, weatherElement)=>{
     weatherElement.innerHTML = element;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["gzp3I","1Z4Rq"], "1Z4Rq", "parcelRequired5d3")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jJvnD":[function() {},{}]},["gzp3I","1Z4Rq"], "1Z4Rq", "parcelRequired5d3")
 
 //# sourceMappingURL=index.5d9dacde.js.map

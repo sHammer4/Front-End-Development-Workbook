@@ -4,6 +4,7 @@
 // to not lose any marks.
 import { getWeather } from "./api/base";
 import { renderWeather } from "./dom/weather";
+import 'bootstrap/dist/css/bootstrap.css';
 
 let weatherForm = document.querySelector('#weather-search')
 weatherForm.addEventListener("submit", (event) => {
@@ -15,15 +16,15 @@ weatherForm.addEventListener("submit", (event) => {
     //Get weather data
     let weatherElement = document.querySelector(".weather-container")
     getWeather(searchedCity.value).then(weatherData => {
-        //Returns error message if nothing entered
         if(weatherData.message != null) {
             weatherElement.innerHTML = weatherData.message
+        } else if(weatherData.length == 0) {
+            weatherElement.innerHTML = "Weather data cannot be found"
         } else {
             renderWeather(weatherData, weatherElement)
         }
     })
 
     //Clears user input after search
-    console.log("Fricken clear please")
-    event.target.elements["city-name"] = ""
+    event.target.elements["city-name"].value = ""
 })
