@@ -17,11 +17,13 @@ weatherForm.addEventListener("submit", (event) => {
     let weatherElement = document.querySelector(".weather-container")
     getWeather(searchedCity.value).then(weatherData => {
         if(weatherData.message != null) {
-            weatherElement.innerHTML = weatherData.message
-        } else if(weatherData.length == 0) {
-            weatherElement.innerHTML = "Weather data cannot be found"
+            //Displays error message
+            weatherElement.innerHTML = weatherData.cod + ": " + weatherData.message
+            weatherElement.classList.add("text-center")
         } else {
+            //Displays weather data
             renderWeather(weatherData, weatherElement)
+            weatherElement.classList.remove("text-center")
         }
     })
 

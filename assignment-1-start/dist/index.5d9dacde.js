@@ -547,10 +547,15 @@ weatherForm.addEventListener("submit", (event)=>{
     //Get weather data
     let weatherElement = document.querySelector(".weather-container");
     (0, _base.getWeather)(searchedCity.value).then((weatherData)=>{
-        console.log(weatherData);
-        if (weatherData.message != null) weatherElement.innerHTML = weatherData.message;
-        else if (weatherData.length == 0) weatherElement.innerHTML = "Weather data cannot be found";
-        else (0, _weather.renderWeather)(weatherData, weatherElement);
+        if (weatherData.message != null) {
+            //Displays error message
+            weatherElement.innerHTML = weatherData.cod + ": " + weatherData.message;
+            weatherElement.classList.add("text-center");
+        } else {
+            //Displays weather data
+            (0, _weather.renderWeather)(weatherData, weatherElement);
+            weatherElement.classList.remove("text-center");
+        }
     });
     //Clears user input after search
     event.target.elements["city-name"].value = "";
@@ -565,16 +570,7 @@ parcelHelpers.export(exports, "getWeather", ()=>getWeather);
 const API_KEY = "bedacfe1de749e877285f9631320be77";
 // create getWeather function here
 const getWeather = (cityName)=>{
-    //http://api.openweathermap.org/geo/1.0/direct?q=Tokyo&limit=1&appid=bedacfe1de749e877285f9631320be77
-    return fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=" + API_KEY).then((response)=>response.json()).then((data)=>{
-        cityData = data[0];
-        //If nothing entered, will return error code + message
-        //If city found, will take coordinates from original fetch and fetch again for temperature data
-        if (cityData != null) return fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + cityData.lat + "&lon=" + cityData.lon + "&appid=" + API_KEY + "&units=metric").then((reponse)=>reponse.json()).then((data)=>{
-            return data;
-        });
-        return data;
-    });
+    return fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY + "&units=metric").then((response)=>response.json()).then((data)=>data);
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
