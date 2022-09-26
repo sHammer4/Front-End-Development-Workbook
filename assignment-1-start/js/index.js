@@ -19,6 +19,7 @@ weatherForm.addEventListener("submit", (event) => {
         if(weatherData.message != null) {
             //Displays error message
             weatherElement.innerHTML = weatherData.cod + ": " + weatherData.message
+            //Not necessary but looks better with centered text
             weatherElement.classList.add("text-center")
         } else {
             //Displays weather data
