@@ -5,7 +5,10 @@ const API_KEY = "bedacfe1de749e877285f9631320be77"
 const getWeather = (cityName) => {
     return fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY + "&units=metric")
         .then(response => response.json())
-        .then(data => data)
+        .then(data => {
+            console.log(data)
+            return data
+        })
 }
 
 // export the getWeather function
