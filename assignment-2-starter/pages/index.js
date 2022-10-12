@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography';
+import NextJsCoolSites from '../Components/JSArticles';
 
 export default function Home() {
   return (
@@ -15,9 +15,15 @@ export default function Home() {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
       </Head>
       <main>
-        <h1>
-          Assignment 2 - React Components
-        </h1>
+        <Container>
+          <Typography variant="h2" component="h2" color="primary" align="center">
+            Assignment 2 - React Components and Styling
+          </Typography>
+          <Typography color="secondary" align="center">
+          Here's a list of awesome resources that you can use
+          </Typography>
+          <NextJsCoolSites/>
+        </Container>
       </main>
     </div>
   )

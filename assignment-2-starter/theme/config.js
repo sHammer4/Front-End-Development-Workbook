@@ -12,6 +12,5 @@ const themeOptions = {
 };
 
 const theme = createTheme(themeOptions);
-//const theme = createTheme({});
 
 export { theme }
