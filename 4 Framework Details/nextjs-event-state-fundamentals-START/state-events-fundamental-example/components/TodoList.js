@@ -4,15 +4,14 @@ import { Box, TextField, Button, Grid, Typography } from '@mui/material'
 export default function TodoList() {
     const [todoText, setTodoText] = useState("")
     const [allTodos, setAllTodos] = useState([])
-    //To do this we need to essentially combine the todo and the existing
+
 
     const onAddTodoClick = () => {
         console.log(todoText)
-        setTodoText("")
-
+         //To do this we need to essentially combine the todo and the existing
         let newAllTodoList = [todoText, ...allTodos]
         setAllTodos(newAllTodoList)
-
+        console.log(allTodos)
         setTodoText("")
     }
     
