@@ -15,7 +15,55 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import { useState } from 'react'
+
 export default function Home() {
+  const [search, setSearch] = useState("")
+  const [year, setYear] = useState("")
+  const [movies, setMovies] = useState(MOVIE_LIST)
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    validateYear()
+    filterMovies()
+  }
+
+  const validateYear = () => {
+    //Escape early if we don't have something
+    if(year.trim() === "") {
+      return
+    }
+
+    if(year.trim().length !== 4) {
+      setErrorMessage(`${year} is not a valid year`)
+      return
+    }
+
+    setErrorMessage("")
+  }
+
+  const filterMovies = () => {
+    let filteredMovieList = [...MOVIE_LIST]
+
+    if(search.trim() !== "") {
+      filteredMovieList = filteredMovieList.filter((movie) => {
+        let movieName = movie.name.toLowerCase()
+        let searchValue = search.trim().toLowerCase()
+        if (movieName.includes(searchValue)) {
+          return true
+        } return false
+      })
+    }
+    if(year.trim() !== "") {
+      filteredMovieList = filteredMovieList.filter((movie) => {
+        return movie.year === parseInt(year.trim())
+      })
+    }
+
+    setMovies(filteredMovieList)
+  }
+
   return (
     <div>
       <Head>
@@ -33,7 +81,7 @@ export default function Home() {
           <Typography variant="h2" component="h2" style={{textAlign: "center"}}>
             Movies
           </Typography>
-          <form style={{width: '100%'}}>
+          <form style={{width: '100%'}} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -41,6 +89,8 @@ export default function Home() {
                   label="search..."
                   variant="standard"
                   sx={{width: '100%'}}
+                  onChange={(event)=>setSearch(event.target.value)}
+                  value={search}
                   
                 />
               </Grid>
@@ -50,7 +100,8 @@ export default function Home() {
                   label="year"
                   variant="standard"
                   sx={{width: '100%'}}
-                 
+                  onChange={(event)=>setYear(event.target.value)}
+                  value={year}
                 />
               </Grid>
               <Grid item xs={2}>
@@ -60,12 +111,18 @@ export default function Home() {
                 >Filter</Button>
               </Grid>
               <Grid item xs={10}>
-                {/* Add the error message here*/}
+                {errorMessage !== "" && <Alert severity="error">{errorMessage}</Alert>}
               </Grid>
             </Grid>
           </form>
+          {
+            movies.length === 0 &&
+            <Typography variant="p" component="div">
+              No results, please broaden your search
+            </Typography>
+          }
           <List sx={{width: `100%`}}>
-          { MOVIE_LIST.map((movieData, index)=> {
+          { movies.map((movieData, index)=> {
               return <ListItem key={index}>
                 <ListItemText>
                   <Typography variant="p" component="div">
