@@ -1,0 +1,28 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "title": "Wheel of time",
+      "comment": "Books were great but the show was just okay. ",
+      "rating": 8
+    },
+    {
+      "id": 2,
+      "title": "The Lord of the rings",
+      "comment": "A classic movie and a classic book series as well!",
+      "rating": 10
+    },
+    {
+      "title": "Game of thrones",
+      "comment": "books were graphic, last 2 season sucked",
+      "rating": 7,
+      "id": 3
+    },
+    {
+      "title": "Sandman",
+      "comment": "books great, show meh",
+      "rating": 7,
+      "id": 4
+    }
+  ]
+}
