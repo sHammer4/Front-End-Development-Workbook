@@ -27,6 +27,50 @@ const FAVOURITE_BOOKS = [
 ]
 
 export default function Home() {
+  const [favouriteBooks, setFavouriteBooks] = useState(FAVOURITE_BOOKS)
+
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [rating, setRating] = useState("")
+
+  const onTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const onAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
+
+  const onRatingChange = (event) => {
+    //Validation for number
+    if(!isNaN(event.target.value) && !null ){
+      setRating(event.target.value)
+    }
+  }
+
+  let valuesEntered = true
+  const onAddFavouriteBookClick = (event) => {
+    event.preventDefault()
+    //Ensures all fields have values before submitting
+    if(title != "" && author != "" && rating != "") {
+      let newFavouriteBook = {
+        title: title,
+        author: author,
+        rating: parseInt(rating)
+      }
+      setFavouriteBooks([newFavouriteBook, ...favouriteBooks])
+
+      setTitle("")
+      setAuthor("")
+      setRating("")
+      valuesEntered = true
+    }
+    else {
+      valuesEntered = false
+    }
+    console.log(valuesEntered)
+  }
+
   return (
     <div>
       <Head>
@@ -41,7 +85,7 @@ export default function Home() {
               <Title>Add a New Favourite</Title>
               <form>
                 <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={10} sm={5}>
                     <TextField
                       required
                       id="title"
@@ -49,10 +93,11 @@ export default function Home() {
                       label="Book Title"
                       fullWidth
                       variant="standard"
-                      //onChange={onTitleChange}
+                      onChange={onTitleChange}
+                      value={title}
                     />
                   </Grid>
-                  <Grid item xs={10} sm={4}>
+                  <Grid item xs={8} sm={3}>
                     <TextField
                       required
                       id="author"
@@ -60,16 +105,31 @@ export default function Home() {
                       label="Author"
                       fullWidth
                       variant="standard"
-                      //onChange={onAuthorChange}
+                      onChange={onAuthorChange}
+                      value={author}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={2}>
+                    <TextField
+                      required
+                      id="rating"
+                      name="rating"
+                      label="Rating"
+                      fullWidth
+                      variant="standard"
+                      onChange={onRatingChange}
+                      value={rating}
                     />
                   </Grid>
                   <Grid item xs={2} sm={2}>
-                    <Button variant="contained" sx={{ mt: 1.5, ml: 1 }}>Add</Button>
+                    <Button variant="contained" sx={{ mt: 1.5, ml: 1 }}
+                    onClick={onAddFavouriteBookClick}
+                    >Add</Button>
                   </Grid>
                 </Grid>
               </form>
            </Paper>
-          <FavouriteBooks books={FAVOURITE_BOOKS} />
+          <FavouriteBooks books={favouriteBooks} />
         </Container>
       </main>
     </div>

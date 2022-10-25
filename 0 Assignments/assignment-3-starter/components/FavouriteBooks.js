@@ -7,30 +7,7 @@ import TableRow from '@mui/material/TableRow';
 
 import Title from './Title'
 
-import { useState } from 'react';
-
 export default function FavouriteBooks(props) {
-  const [favouriteBooks, setFavouriteBooks] = useState([...props.books])
-
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [rating, setRating] = useState(null)
-
-  const onTitleChange = (event) => {
-    setTitle(event.target.value)
-    console.log(title)
-  }
-
-  const onAuthorChange = (event) => {
-    setAuthor(event.target.value)
-    console.log(author)
-  }
-
-  const onAddFavouriteBookClick = (event) => {
-    event.preventDefault()
-    console.log("heheh")
-  }
-
   return <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
       <Title>Favourite Books</Title>
       <Table size="small">
@@ -43,7 +20,7 @@ export default function FavouriteBooks(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {favouriteBooks.map((row, index) => (
+          {props.books.map((row, index) => (
             <TableRow key={index}>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.author}</TableCell>
