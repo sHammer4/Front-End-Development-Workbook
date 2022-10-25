@@ -27,14 +27,54 @@ import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import AdaptationReviewCard from '../components/AdaptationReviewCard';
+import { useState } from 'react';
 
-
-export default function Home() {
-  const MOCK_ADAPTATION_RATING = [{
+const MOCK_ADAPTATION_RATING = [{
     'title': 'Fight Club',
     'comment': 'Great movie and book',
     'rating': 10
   }]
+
+export default function Home() {
+  const [reviews, setReviews] = useState(MOCK_ADAPTATION_RATING)
+
+  const [title, setTitle] = useState("")
+  const [comment, setComment] = useState("")
+  const [rating, setRating] = useState(1)
+
+  const addReview = (event) => {
+    event.preventDefault()
+    fetch("http://localhost:5000/reviews", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: title,
+        comment: comment,
+        rating: rating
+      })
+    }).then((response) => {
+      return response.json()
+    }).then((data) => {
+      setReviews([...reviews], data)
+      loadAllReviews()
+    })
+
+  }
+
+  const loadAllReviews = () => {
+    fetch("http://localhost:5000/reviews", {
+      method: "GET"
+    }).then((response) => {
+      return response.json()
+    }).then((data => {
+      setReviews(data)
+    }))
+  }
+
+    
   return (
     <div>
       <Head>
@@ -51,7 +91,7 @@ export default function Home() {
       </AppBar>
       <main>
         <Container maxWidth="md">
-          <form>
+          <form onSubmit={addReview}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
                 <TextField
@@ -60,6 +100,8 @@ export default function Home() {
                   label="Adaptation Title"
                   fullWidth
                   variant="standard"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -69,6 +111,8 @@ export default function Home() {
                   label="Comments"
                   fullWidth
                   variant="standard"
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -78,6 +122,8 @@ export default function Home() {
                     row
                     aria-labelledby="adaptation-rating"
                     name="rating-buttons-group"
+                    value={rating}
+                    onChange={(event) => setRating(event.target.value)}
                   >
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
@@ -110,32 +156,17 @@ export default function Home() {
           >
             <Button
               variant="contained"
+              onClick={loadAllReviews}
             >
               Load All Current Reviews
             </Button>
           </Box>
-          {MOCK_ADAPTATION_RATING.map((adaptation, index)=> {
-            return <Card key={index}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
-                    {adaptation.rating}
-                  </Avatar>
-                }
-                
-                title={
-                  <Typography variant="body2" color="text.secondary">
-                    {adaptation.title}
-                  </Typography>
-                }
-                
-              />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {adaptation.comment}
-                </Typography>
-              </CardContent>
-            </Card>
+          {reviews.map((adaptation)=> {
+            return <AdaptationReviewCard
+              title={adaptation.title}
+              rating={adaptation.rating}
+              comment={adaptation.comment}
+            />
           })}
 
         </Container>

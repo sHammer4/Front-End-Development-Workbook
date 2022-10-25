@@ -13,16 +13,11 @@ import Title from './Title'
 
 export default function FavouriteBooks(props) {
   const [titleFilter, setTitleFilter] = useState("")
-  let filteredBooks = [...props.books]
-  console.log(filteredBooks)
+  //let filteredBooks = [...props.books]
+  //console.log(filteredBooks)
 
   const filterHandler = (event) => {
     setTitleFilter(event.target.value)
-
-    let lowerCaseFilter = event.target.value.toLowerCase()
-    filteredBooks = props.books.filter((book) => {
-      return book.title.toLowerCase().includes(lowerCaseFilter)
-    })
   }
 
   return <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -48,7 +43,10 @@ export default function FavouriteBooks(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredBooks.map((row, index) => (
+          { props.books.filter((book) => {
+              return book.title.toLowerCase().includes(titleFilter.toLowerCase())
+            })
+              .map((row, index) => (
             <TableRow key={index}>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.author}</TableCell>
