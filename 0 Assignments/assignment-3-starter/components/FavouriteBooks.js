@@ -5,11 +5,39 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import { Box } from '@mui/system';
+
 import Title from './Title'
 
 export default function FavouriteBooks(props) {
+  const [titleFilter, setTitleFilter] = useState("")
+  let filteredBooks = [...props.books]
+  console.log(filteredBooks)
+
+  const filterHandler = (event) => {
+    setTitleFilter(event.target.value)
+
+    let lowerCaseFilter = event.target.value.toLowerCase()
+    filteredBooks = props.books.filter((book) => {
+      return book.title.toLowerCase().includes(lowerCaseFilter)
+    })
+  }
+
   return <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
       <Title>Favourite Books</Title>
+      <Box sx={{ pb: 1 }}>
+        <TextField
+          id="filter"
+          name="filter"
+          label="Search title"
+          variant="standard"
+          onChange={filterHandler}
+          value={titleFilter}
+        />
+      </Box>
+      
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -20,7 +48,7 @@ export default function FavouriteBooks(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.books.map((row, index) => (
+          {filteredBooks.map((row, index) => (
             <TableRow key={index}>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.author}</TableCell>
@@ -32,5 +60,5 @@ export default function FavouriteBooks(props) {
       </Table>
   </Paper>
 }
-
+;
 // 

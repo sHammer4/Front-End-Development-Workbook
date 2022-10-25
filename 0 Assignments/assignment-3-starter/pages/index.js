@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 import { useState } from 'react';
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 import NavBar from '../components/NavBar'
 import Title from '../components/Title'
@@ -33,6 +35,8 @@ export default function Home() {
   const [author, setAuthor] = useState("")
   const [rating, setRating] = useState("")
 
+  const [alertActive, setAlertActive] = useState(false)
+
   const onTitleChange = (event) => {
     setTitle(event.target.value)
   }
@@ -48,27 +52,30 @@ export default function Home() {
     }
   }
 
-  let valuesEntered = true
   const onAddFavouriteBookClick = (event) => {
     event.preventDefault()
     //Ensures all fields have values before submitting
     if(title != "" && author != "" && rating != "") {
+      //Creates a new book object using inputted values and adds it to the list of favourite books
       let newFavouriteBook = {
         title: title,
         author: author,
         rating: parseInt(rating)
       }
+      console.log(newFavouriteBook)
       setFavouriteBooks([newFavouriteBook, ...favouriteBooks])
 
+      //Resets all values to default (blank)
       setTitle("")
       setAuthor("")
       setRating("")
-      valuesEntered = true
+      //Hides alert in case it's still up
+      setAlertActive(false)
     }
+    //If any value is missing, the alert will be active
     else {
-      valuesEntered = false
+      setAlertActive(true)
     }
-    console.log(valuesEntered)
   }
 
   return (
@@ -127,6 +134,11 @@ export default function Home() {
                     >Add</Button>
                   </Grid>
                 </Grid>
+                { alertActive && 
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    Please enter all values correctly.</Alert>
+                }
               </form>
            </Paper>
           <FavouriteBooks books={favouriteBooks} />
