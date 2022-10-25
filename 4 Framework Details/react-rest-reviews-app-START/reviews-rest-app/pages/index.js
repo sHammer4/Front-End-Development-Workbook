@@ -36,6 +36,8 @@ const MOCK_ADAPTATION_RATING = [{
     'rating': 10
   }]
 
+const FETCH_URL = "http://localhost:5000/reviews"
+
 export default function Home() {
   const [reviews, setReviews] = useState(MOCK_ADAPTATION_RATING)
 
@@ -45,7 +47,7 @@ export default function Home() {
 
   const addReview = (event) => {
     event.preventDefault()
-    fetch("http://localhost:5000/reviews", {
+    fetch(FETCH_URL, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -65,7 +67,7 @@ export default function Home() {
   }
 
   const loadAllReviews = () => {
-    fetch("http://localhost:5000/reviews", {
+    fetch(FETCH_URL, {
       method: "GET"
     }).then((response) => {
       return response.json()
