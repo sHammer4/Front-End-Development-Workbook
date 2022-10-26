@@ -12,6 +12,7 @@ import { Box } from '@mui/system';
 import Title from './Title'
 
 export default function FavouriteBooks(props) {
+  //Stateful variables for the title filter input
   const [titleFilter, setTitleFilter] = useState("")
 
   //When filter handler triggers, title filter is changed to user input
@@ -47,7 +48,9 @@ export default function FavouriteBooks(props) {
           { props.books.filter((book) => {
             // Turns both values to lower case to eliminate case-sensistivity
             // Only selects books whos title contains the text from the search query
-              return book.title.toLowerCase().includes(titleFilter.toLowerCase())
+              return book.title
+                .toLowerCase()
+                .includes(titleFilter.toLowerCase())
             })
               .map((row, index) => (
             <TableRow key={index}>

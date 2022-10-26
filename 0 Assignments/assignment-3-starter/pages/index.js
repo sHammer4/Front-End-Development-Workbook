@@ -37,6 +37,7 @@ export default function Home() {
 
   const [alertActive, setAlertActive] = useState(false)
 
+  //Handler updates the state when text field updates
   const onTitleChange = (event) => {
     setTitle(event.target.value)
   }
@@ -47,7 +48,7 @@ export default function Home() {
 
   const onRatingChange = (event) => {
     //Validation for number
-    if(!isNaN(event.target.value) && !null ){
+    if(!isNaN(event.target.value) ){
       setRating(event.target.value)
     }
   }
