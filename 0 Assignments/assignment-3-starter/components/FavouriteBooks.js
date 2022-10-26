@@ -13,15 +13,15 @@ import Title from './Title'
 
 export default function FavouriteBooks(props) {
   const [titleFilter, setTitleFilter] = useState("")
-  //let filteredBooks = [...props.books]
-  //console.log(filteredBooks)
 
+  //When filter handler triggers, title filter is changed to user input
   const filterHandler = (event) => {
     setTitleFilter(event.target.value)
   }
 
   return <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
       <Title>Favourite Books</Title>
+      {/* Added text field to record user input to filter books */}
       <Box sx={{ pb: 1 }}>
         <TextField
           id="filter"
@@ -43,7 +43,10 @@ export default function FavouriteBooks(props) {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* Filters the book array first before map */}
           { props.books.filter((book) => {
+            // Turns both values to lower case to eliminate case-sensistivity
+            // Only selects books whos title contains the text from the search query
               return book.title.toLowerCase().includes(titleFilter.toLowerCase())
             })
               .map((row, index) => (
