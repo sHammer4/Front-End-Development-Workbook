@@ -29,12 +29,15 @@ const FAVOURITE_BOOKS = [
 ]
 
 export default function Home() {
+  //Stateful variable for favourite book array, takes constant as default
   const [favouriteBooks, setFavouriteBooks] = useState(FAVOURITE_BOOKS)
 
+  //Stateful variable for input fields with a blank default value
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
-  const [rating, setRating] = useState("")
+  const [rating, setRating] = useState(0)
 
+  //Stateful boolean for the alert toggle
   const [alertActive, setAlertActive] = useState(false)
 
   //Handler updates the state when text field updates
@@ -47,13 +50,11 @@ export default function Home() {
   }
 
   const onRatingChange = (event) => {
-    //Validation for number
-    if(!isNaN(event.target.value) ){
-      setRating(event.target.value)
-    }
+    setRating(event.target.value)
   }
 
   const onAddFavouriteBookClick = (event) => {
+    //Stops the form from submitting
     event.preventDefault()
     //Ensures all fields have values before submitting
     if(title != "" && author != "" && rating != "") {
@@ -63,13 +64,13 @@ export default function Home() {
         author: author,
         rating: parseInt(rating)
       }
-      console.log(newFavouriteBook)
       setFavouriteBooks([newFavouriteBook, ...favouriteBooks])
 
       //Resets all values to default (blank)
       setTitle("")
       setAuthor("")
       setRating("")
+
       //Hides alert in case it's still up
       setAlertActive(false)
     }
@@ -101,6 +102,7 @@ export default function Home() {
                       label="Book Title"
                       fullWidth
                       variant="standard"
+                      //Handler runs when text field value changes and value is controlled
                       onChange={onTitleChange}
                       value={title}
                     />
@@ -120,6 +122,7 @@ export default function Home() {
                   <Grid item xs={6} sm={2}>
                     <TextField
                       required
+                      type="number"
                       id="rating"
                       name="rating"
                       label="Rating"
@@ -135,14 +138,21 @@ export default function Home() {
                     >Add</Button>
                   </Grid>
                 </Grid>
-                { alertActive && 
+                { //If the alert active variable is true (check validation), Alert appears
+                  alertActive && 
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
                     Please enter all values correctly.</Alert>
                 }
               </form>
            </Paper>
-          <FavouriteBooks books={favouriteBooks} />
+          {/* Uses imported favourite books component and submits the favourite book list as a prop */}
+          <FavouriteBooks 
+            books={favouriteBooks}
+            // title={title} 
+            // author={author}
+            // rating={rating}
+          />
         </Container>
       </main>
     </div>
