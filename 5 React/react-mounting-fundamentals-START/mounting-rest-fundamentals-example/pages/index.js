@@ -1,8 +1,6 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,26 +11,40 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { getRandomQuote } from '../utils/api/quotes.js';
+
+const QUOTE_PLACEHOLDER = {
+  quote: "Quote here.",
+  author: "Author here"
+}
+
 export default function Home() {
   const RANDOM_QUOTE_URL = 'https://api.quotable.io/random'
   const [quoteData, setQuoteData] = useState({
     quote: "Quote here.",
     author: "Author here"
   })
+  const [numberOfQuotes, setNumberOfQuotes] = useState(0)
 
-  const handleClick = () => {
-    fetch(RANDOM_QUOTE_URL)
-      .then((response)=> {
-        return response.json()
-      }).then((data)=> {
+  useEffect(() => {
+    changeQuote() //Does one thing
+  }, [])  //Fires on mount (at the start)
+
+  useEffect(() => {
+    if(quoteData.quote === QUOTE_PLACEHOLDER.quote) {
+      return
+    }
+    setNumberOfQuotes(numberOfQuotes + 1)
+  }, [quoteData]) //Listens to changes in quotes.
+
+  const changeQuote = () => {
+    getRandomQuote().then((data)=> {
+        console.log(data)
         setQuoteData({
           quote: data.content,
           author: data.author
         })
       })
-
-
-    
   }
 
   return (
@@ -81,11 +93,20 @@ export default function Home() {
             >
               <Button
                 variant="contained"
-                onClick={handleClick}
+                onClick={changeQuote}
               >
                 Get New Quote
               </Button>
             </Box>
+            <Typography
+                sx={{pt: 8}}
+                variant="h5"
+                align="center"
+                color="text.primary"
+                paragraph
+              >
+                You have fetched {numberOfQuotes} quotes
+              </Typography>
           </Box>
         </Container>
       </main>
