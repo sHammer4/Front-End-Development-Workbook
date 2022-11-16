@@ -1,31 +1,25 @@
-import {useEffect, useState, Fragment} from 'react'
+import {useEffect, useState} from 'react'
 
 import Head from 'next/head'
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 
 import Navbar from '../components/Navbar'
 
-import { POPULAR_AUTHORS } from '../utils/constants/popular_authors';
 import { fetchAuthors, getBooks } from '../utils/api/authors';
+import AuthorInfo from '../components/AuthorInfo';
+import BooksTable from '../components/BooksTable';
+import PopularAuthorList from '../components/PopularAuthorList';
 
 
 export default function Home() {
@@ -56,21 +50,11 @@ export default function Home() {
           <Grid container spacing={4}>
             <Grid item xs={8}>
               <Box>
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  align="center"
-                  color="text.primary"
-                  gutterBottom
-                >
-                  {authorData.name}
-                </Typography>
-                <Typography  align="center" color="text.primary" paragraph>
-                  {authorData.birth_date} - {authorData.death_date != null ? authorData.death_date : "Present Day"}
-                </Typography>
-                {/* Create a “AuthorInfo” component that will contain all of the JSX to display the other information. 
-                It should take on prop which should be the stateful variable of your author information. 
-                Use this component in your pages’ JSX. */}
+                <AuthorInfo 
+                  name={authorData.name}
+                  birthDate={authorData.birth_date}
+                  deathDate={authorData.death_date} 
+                />
                 <TableContainer component={Paper}>
                     <Table>
                     <TableHead>
@@ -78,55 +62,17 @@ export default function Home() {
                         <TableCell>Books in all Languages</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {/* */}
-                        <TableRow>
-                            <TableCell>
-                                Sample Row
-                            </TableCell>
-                        </TableRow>
-                        {/* */}
-                    </TableBody>
+                    {booksData.map((book) => {
+                      return <BooksTable title={book.title} />
+                    })}
                     </Table>
                 </TableContainer>
 
 
               </Box>
             </Grid>
-            <Grid item xs={4}>
-              
-              <Box sx={{width: '100%'}}>
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  align="center"
-                  color="text.primary"
-                  gutterBottom
-                >
-                  Popular Authors
-                </Typography>
-                <List sx={{width: '100%'}}>
-                  <Divider />
-                  {POPULAR_AUTHORS.map((author, index)=> {
-                    return <Fragment key={index}>
-                      <ListItem
-                        secondaryAction={
-                          <Button
-                            onClick={(event) => {setAuthorKey(author.key)}}
-                            //onClick={setAuthorKey(author.key)}
-                          >show</Button>
-                        }
-                      >
-                        <ListItemText primary={author.name}></ListItemText>
-                      </ListItem>
-                      <Divider />
-                    </Fragment>
-                  })}
-                </List>
-              </Box>
-            </Grid>
+            <PopularAuthorList setAuthorKey={setAuthorKey} />
           </Grid>
-          
         </Container>
       </main>
     </div>
