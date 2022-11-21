@@ -37,7 +37,7 @@ export default function Agency() {
         :
         <Container sx={{paddingTop:2}} component="main">
             <Grid container>
-                <Grid item xs="2">
+                <Grid item xs={2}>
                     <img 
                         src={agencyDetails.logo_url}
                         style={{
@@ -45,12 +45,12 @@ export default function Agency() {
                         }}
                     />
                 </Grid>
-                <Grid item xs="10">
+                <Grid item xs={10}>
                     <Typography variant="h3">
                         {agencyDetails.name}
                     </Typography>
                 </Grid>
-                <Grid item xs="4">
+                <Grid item xs={4}>
                     <Typography variant="h5">
                         Launch Details
                     </Typography>
@@ -63,7 +63,7 @@ export default function Agency() {
                         description={agencyDetails.successful_launches}
                     />
                 </Grid>
-                <Grid item xs="4">
+                <Grid item xs={4}>
                     <Typography variant="h5">
                         Agency Information
                     </Typography>
@@ -76,6 +76,23 @@ export default function Agency() {
                         description={`Founded ${agencyDetails.founding_year}` }
                         subDescription={agencyDetails.description}
                     />  
+                </Grid>
+                <Grid item xs={4}>
+                    <Typography variant="h5">
+                        SpaceCraft
+                    </Typography>
+                    {agencyDetails.spacecraft_list && 
+                        agencyDetails.spacecraft_list.map((spaceCraft) => {
+                            return <SimpleDetailsCard
+                                key={spaceCraft.id}
+                                description={spaceCraft.name}
+                                buttonCallback = {() => {
+                                    router.push(`/spacecraft/${spaceCraft.id}`)
+                                }}
+                                buttonName = "Go to Spacecraft"
+                            />
+                        })
+                    }
                 </Grid>
             </Grid>
             
