@@ -9,6 +9,8 @@ import { getBookData } from "../../utils/api/books";
 import { COVERS_BASE_URL } from "../../utils/api/base";
 
 import { useRouter } from "next/router";
+import Image from 'next/image'
+
 import { useState, useEffect } from "react";
 
 
@@ -62,7 +64,7 @@ export default function Books(props) {
                     <ImageList sx={{ width: 3/4 }} cols={3} >
                         {bookData.covers.map((coverID) => (
                             <ImageListItem key={getCoverURL(coverID)} >
-                                <img
+                                <Image
                                     src={getCoverURL(coverID)}
                                     srcSet={getCoverURL(coverID)}
                                     alt={`${bookData.title} Cover`}

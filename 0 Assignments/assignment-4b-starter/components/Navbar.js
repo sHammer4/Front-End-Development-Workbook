@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 export default function Navbar(props) {
     return <AppBar position="relative" sx={{mb: '1rem'}}>
     <Toolbar>
-      <Link href="../pages/index.js">
+      <Link href="/">
         <Typography
           variant="h6"
           color="inherit"
